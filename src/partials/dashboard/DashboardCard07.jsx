@@ -9,7 +9,7 @@ function DashboardCard07() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://192.168.43.47:1234/get_users_all', {
+        const response = await fetch('https://skeletonserver.onrender.com/get_users_all', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

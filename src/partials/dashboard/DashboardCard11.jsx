@@ -13,7 +13,7 @@ function DashboardCard11() {
   useEffect(() => {
     const getDeets = async () => {
       try {
-        const response = await fetch(`http://192.168.43.47:1234/get_reported_users`, {
+        const response = await fetch(`https://skeletonserver.onrender.com/get_reported_users`, {
           method: "POST"
         })
         if (!response.ok){
