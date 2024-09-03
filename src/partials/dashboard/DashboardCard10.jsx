@@ -99,7 +99,7 @@ function DashboardCard10() {
       <div className="p-3">
 
         {/* Table */}
-        <div className="overflow-x-auto overflow-y-auto h-64">
+        <div className="overflow-x-auto overflow-y-auto h-80">
           <table className="table-auto w-full">
             {/* Table header */}
             <thead className="text-xs font-semibold uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700 dark:bg-opacity-50">

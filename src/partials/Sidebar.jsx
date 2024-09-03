@@ -81,7 +81,7 @@ function Sidebar({
           </button>
           {/* Logo */}
           <NavLink end to="/" className="block">
-            <img src={MyIcon} alt="Skeleton Socials" style={{ width: 40, height: 50, objectFit: 'contain'}}/>
+            <img src={MyIcon} alt="Skeleton Socials" style={{ width: 40, height: 50, objectFit: 'contain', borderRadius: 30}}/>
           </NavLink>
         </div>
 
