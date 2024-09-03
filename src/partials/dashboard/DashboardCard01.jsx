@@ -128,17 +128,17 @@ function DashboardCard01() {
           <EditMenu align="right" className="relative inline-flex">
             <li>
               <Link className="font-medium text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 flex py-1 px-3" to="#0">
-                Option 1
+                Daily
               </Link>
             </li>
             <li>
               <Link className="font-medium text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 flex py-1 px-3" to="#0">
-                Option 2
+                Monthly
               </Link>
             </li>
             <li>
-              <Link className="font-medium text-sm text-red-500 hover:text-red-600 flex py-1 px-3" to="#0">
-                Remove
+              <Link className="font-medium text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 flex py-1 px-3" to="#0">
+                Total
               </Link>
             </li>
           </EditMenu>
