@@ -13,7 +13,7 @@ function DashboardCard14() {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await fetch('http://192.168.43.47:1234/get_locations_from_db', {
+        const response = await fetch('https://skeletonserver.onrender.com/get_locations_from_db', {
           method: 'GET',
         });
 
