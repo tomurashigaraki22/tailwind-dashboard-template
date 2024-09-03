@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import LineChart from '../../charts/LineChart01';
 import { chartAreaGradient } from '../../charts/ChartjsConfig';
@@ -8,6 +8,46 @@ import EditMenu from '../../components/DropdownEditMenu';
 import { tailwindConfig, hexToRGB } from '../../utils/Utils';
 
 function DashboardCard01() {
+  const [users, setUsers] = useState("")
+  const [loading, setloading] = useState(true)
+  const [error, seterror] = useState("")
+
+  useEffect(() => {
+    const getDeets = async () => {
+      try {
+        const response = await fetch(`https://skeletonserver.onrender.com/get_all_users_count`, {
+          method: 'POST',
+        })
+        if (!response.ok){
+          console.log("Not working: ", response)
+          console.log("RESPJSON: ", await response.json())
+          return
+        }
+
+        const resp2 = await response.json()
+        if (resp2.status === 200){
+          setUsers(resp2.users)
+        }
+        else if (resp2.status === 404){
+          console.log("Did not work")
+          console.log("E: ", resp2)
+          setUsers("0")
+        }
+        else{
+          console.log("EEEE: ", resp2)
+          console.log("Error fetching")
+          seterror("Network Error")
+        }
+
+      } catch (error) {
+        console.log("This error happened: ", error)
+        seterror("No network connection")
+      } finally{
+        setloading(false)
+      }
+    }
+    getDeets()
+  }, [])
 
   const chartData = {
     labels: [
@@ -83,7 +123,7 @@ function DashboardCard01() {
     <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
       <div className="px-5 pt-5">
         <header className="flex justify-between items-start mb-2">
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">Acme Plus</h2>
+          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">Number of Onboarded Users</h2>
           {/* Menu button */}
           <EditMenu align="right" className="relative inline-flex">
             <li>
@@ -103,11 +143,23 @@ function DashboardCard01() {
             </li>
           </EditMenu>
         </header>
-        <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mb-1">Sales</div>
-        <div className="flex items-start">
-          <div className="text-3xl font-bold text-gray-800 dark:text-gray-100 mr-2">$24,780</div>
-          <div className="text-sm font-medium text-green-700 px-1.5 bg-green-500/20 rounded-full">+49%</div>
-        </div>
+          {loading ? (
+            <div className='flex items-start'>
+              <p className="text-xl font-bold text-gray-800 dark:text-gray-100 mr-2">Fetching Onboarded Users Count...</p>
+            </div>
+          ) : ( error !== "" ? (
+              <div className='flex items-start'>
+                <p className="text-xl font-bold text-gray-800 dark:text-gray-100 mr-2">{error}</p>
+              </div>
+          ) : (
+          <div className="flex items-start">
+            <div className="text-3xl font-bold text-gray-800 dark:text-gray-100 mr-2">{users}</div>
+            <div className="text-sm font-medium text-green-700 px-1.5 bg-green-500/20 rounded-full">+49%</div>
+          </div>
+          )
+
+        )}
+        
       </div>
       {/* Chart built with Chart.js 3 */}
       <div className="grow max-sm:max-h-[128px] xl:max-h-[128px]">

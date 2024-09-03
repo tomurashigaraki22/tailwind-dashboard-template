@@ -1,10 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import BarChart from '../../charts/BarChart03';
 
 // Import utilities
 import { tailwindConfig } from '../../utils/Utils';
 
 function DashboardCard11() {
+  const [reportedUsers, setreportedUsers] = useState([])
+  const [loading, setloading] = useState(true)
+  const [error, seterror] = useState("")
+
+
+  useEffect(() => {
+    const getDeets = async () => {
+      try {
+        const response = await fetch(`http://192.168.43.47:1234/get_reported_users`, {
+          method: "POST"
+        })
+        if (!response.ok){
+          console.log("Response error")
+          seterror("Network Error")
+          return
+        }
+
+        const resp2 = await response.json()
+        if (resp2.status === 200){
+          setreportedUsers(resp2.reported)
+        } else if (resp2.status === 404){
+          setreportedUsers([])
+        }
+        else{
+          seterror("An error occurred when fetching reported users")
+        }
+
+      } catch (error) {
+        console.log("Error: ", error)
+        seterror("Unknown error occurred")
+      } finally{
+        setloading(false)
+      }
+    }
+    getDeets();
+  }, [])
 
   const chartData = {
     labels: ['Reasons'],
@@ -55,18 +91,29 @@ function DashboardCard11() {
   return (
     <div className="flex flex-col col-span-full sm:col-span-6 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
       <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60 flex items-center">
-        <h2 className="font-semibold text-gray-800 dark:text-gray-100">Reason for Refunds</h2>
-      </header>
-      <div className="px-5 py-3">
-        <div className="flex items-start">
-          <div className="text-3xl font-bold text-gray-800 dark:text-gray-100 mr-2">449</div>
-          <div className="text-sm font-medium text-red-700 px-1.5 bg-red-500/20 rounded-full">-22%</div>
-        </div>
-      </div>      
+        <h2 className="font-semibold text-gray-800 dark:text-gray-100">Show Reported Users</h2>
+      </header>     
       {/* Chart built with Chart.js 3 */}
-      <div className="grow">
-        {/* Change the height attribute to adjust the chart height */}
-        <BarChart data={chartData} width={595} height={48} />
+      <div className="grow px-5" style={{ height: '350px', overflowY: 'auto' }}>
+        {/* Your content goes here */}
+        {loading ? (
+          <div>Loading Reported Users</div>
+        ) : (
+          error !== "" ? (
+            <div className='text-red-500 mt-5'>{error}</div>
+          ) : (reportedUsers.length > 0 ? (
+            reportedUsers.map((users, index) => (
+              <div key={index} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                <div className='text-gray-800 dark:text-gray-100'>{users.email}</div>
+                <div className='text-gray-800 dark:text-gray-100'>{users.reason}</div>
+              </div>
+            ))
+          ) : (
+            <div className='text-gray-800 dark:text-gray-100'>No reported users</div>
+          )
+            
+          )
+        )}
       </div>
     </div>
   );

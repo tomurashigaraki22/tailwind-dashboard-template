@@ -7,8 +7,8 @@ function Banner() {
   const template = query.get('template');
   const liteLink =
     template === 'laravel'
-      ? 'https://github.com/cruip/laravel-tailwindcss-admin-dashboard-template'
-      : 'https://github.com/cruip/tailwind-dashboard-template';
+      ? 'https://github.com/tomurashigaraki22'
+      : 'https://github.com/tomurashigaraki22';
 
   return (
     <>
