@@ -52,7 +52,7 @@ function DashboardCard12() {
       const secretIdArray = Array.from(secret_id)
       formData.append("secret_id", JSON.stringify(secretIdArray))
       formData.append("id", selectedUser.id)
-      const response = await fetch(`https://skeletonserver.onrender.com/delete_secret`, {
+      const response = await fetch(`http://192.168.43.47:1234/delete_secret`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -60,13 +60,21 @@ function DashboardCard12() {
         body: formData
       });
 
+      if (!response.ok){
+        console.log("R: ", response)
+        console.log("Onouha: ", await response.json())
+      }
+
       if (response.ok) {
         setReportedUsers(reportedUsers.filter(u => u.id !== selectedUser.id));
       } else {
+        console.log("E: ", response)
+        console.log("REso: ", await response.json())
         setError("Failed to delete user");
       }
     } catch (error) {
       setError("An error occurred during deletion");
+      
     } finally {
       setShowModal(false);
       setSelectedUser(null);

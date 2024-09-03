@@ -11,16 +11,15 @@ function DashboardCard13() {
   const [deleteError, setDeleteError] = useState("");
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchSecrets = async () => {
       try {
         const response = await fetch('https://skeletonserver.onrender.com/secrets', {
           method: 'GET',
         });
+        const data = await response.json();
 
-        const resp2 = await response.json();
-
-        if (resp2.status === 200) {
-          setUsers(resp2.secrets);
+        if (response.ok) {
+          setUsers(data.secrets);
         } else {
           setError("An error occurred while fetching secrets");
         }
@@ -31,30 +30,35 @@ function DashboardCard13() {
       }
     };
 
-    fetchUsers();
+    fetchSecrets();
   }, []);
 
-  const handleDelete = async () => {
+  const handleConfirmDelete = async () => {
     if (!selectedSecret) return;
 
     setDeleting(true);
     try {
-      const response = await fetch(`https://skeletonserver.onrender.com/secrets/${selectedSecret.secret_id}`, {
-        method: 'DELETE',
+      const response = await fetch('https://skeletonserver.onrender.com/delete_secret', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ secret_id: selectedSecret.secret_id }),
       });
 
-      const resp2 = await response.json();
-
-      if (resp2.status === 200) {
+      if (response.ok) {
         setUsers(users.filter(user => user.secret_id !== selectedSecret.secret_id));
-        setShowModal(false);
+        setError("");
       } else {
-        setDeleteError("An error occurred while deleting the secret");
+        const result = await response.json();
+        setDeleteError(result.message || "Failed to delete secret");
       }
     } catch (error) {
-      setDeleteError("An error occurred while deleting the secret");
+      setDeleteError("An error occurred during deletion");
     } finally {
       setDeleting(false);
+      setShowModal(false);
+      setSelectedSecret(null);
     }
   };
 
@@ -136,7 +140,7 @@ function DashboardCard13() {
                 Cancel
               </button>
               <button
-                onClick={handleDelete}
+                onClick={handleConfirmDelete}
                 className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
                 disabled={deleting}
               >
