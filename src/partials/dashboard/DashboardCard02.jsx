@@ -147,7 +147,7 @@ function DashboardCard02() {
           ) : (
           <div className="flex items-start">
             <div className="text-3xl font-bold text-gray-800 dark:text-gray-100 mr-2">{users}</div>
-            <div className="text-sm font-medium text-green-700 px-1.5 bg-green-500/20 rounded-full">+49%</div>
+            <div className="text-sm font-medium text-green-700 px-1.5 bg-green-500/20 rounded-full">+0%</div>
           </div>
           )
 

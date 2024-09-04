@@ -12,6 +12,7 @@ import DashboardCard11 from '../partials/dashboard/DashboardCard11';
 import DashboardCard12 from '../partials/dashboard/DashboardCard12';
 import DashboardCard13 from '../partials/dashboard/DashboardCard13';
 import DashboardCard14 from '../partials/dashboard/DashboardCard14';
+import DashboardCard15 from '../partials/dashboard/DashboardCard15';
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -120,6 +121,7 @@ function Dashboard() {
                   <DashboardCard12 />
                   <DashboardCard13 />
                   <DashboardCard14 />
+                  <DashboardCard15/>
                 </div>
 
                 {/* Modal */}
